@@ -12,9 +12,11 @@ We'll examine 3 options for profiling:
 
 The recommended way is to setup a virtual environment and install the dependencies there. E.g. in linux:
 
-> $ python -m venv profiler-env
-> $ source profiler-env/bin/activate
-> $ pip install --upgrade pip && pip install -r requirements.txt
+```
+$ python -m venv profiler-env
+$ source profiler-env/bin/activate
+$ pip install --upgrade pip && pip install -r requirements.txt
+```
 
 ## Time profiling
 
