@@ -29,23 +29,25 @@ This example utilizes an artificial way of slowing down the script (i.e. through
 
 The lowest level of profiling we can accomplish is through the built-in cProfile module. Usually we run this as follows:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/cprofile.png?raw=true)
 
 In our example this would look like:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/cprofile2.png?raw=true)
 
 The output lists all function calls (both user-defined and built-in) with all their execution time stats (total time, cumulative time, etc.). E.g. we can tell how in terms of execution time `func3` > `func2` > `func1`. Through this we can in theory identify possible bottlenecks in our program.
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/cprofile_slow_output.png?raw=true)
 
 The issue with `cProfile` is that in real world programs it can be very noisy with low-level information (we'll see this in the next example). A more convenient way to profile our code is through **line profilers**. These list line-by-line the execution stats of our program. The catch is that we'll need to specify exactly what we want the profiler to track. We'll use `kernprof` which requires us to decorate any function we want to track with the `@profile` decorator. In `slow_kern.py` we have made these changes to the script, in order to track all 3 user-defined functions.
 
 To run kernprof:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/kernprof.png?raw=true)
 
 The output of kernprof:
+
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/kernprof_slow_kern_output.png?raw=true)
 
 ### Linalg
 
@@ -61,16 +63,18 @@ python -m cProfile -s tottime linalg.py
 
 The result might not be what we expected. It isn't the linear algebra operations, or the computation of the statistics that takes up the most time, but the user defined, `make_sparse` function!
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/cprofile_linalg_output.png?raw=true)
 
 Also it's worth to note how noisy this output can be, it's so granular that even in this simple example it takes up ~1400 lines!
 
-Let's try to use `kernprof` to see what actually takes up the most time. Since we know that `make_sparse` takes up the most time, we'll focus on this function and see how we can improve it. 'linalg\_kern.py` is a script that has added a `@profile` decorator to the `make_sparse` function.
+Let's try to use `kernprof` to see what actually takes up the most time. Since we know that `make_sparse` takes up the most time, we'll focus on this function and see how we can improve it. 'linalg\_kern.py' is a script that has added a `@profile` decorator to the `make_sparse` function.
 
 
 ```
 kernprof -v -l linalg_kern.py
 ```
+
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/kernprof_linalg_output.png?raw=true)
 
 From the output we can see that the poor implementation of the function is what is the problem. Notice how most of the time is taken up inside the double for loop and more specifically in the membership condition inside the innermost loop. Needless to say that this a very inefficient implementation.
 
@@ -84,9 +88,9 @@ Another topic that we'll discuss is memory profiling. Sometimes the performance 
 
 Let's start off with the first. Given how we wrote the script, we might expect the memory consumption to progress like this:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/mem_expectation.png?raw=true)
 
-To check if in reality it is as we expect we'll use the 'memory_profiler' package mentioned above.
+To check if in reality it is as we expect we'll use the 'memory\_profiler' package mentioned above.
 
 ```
 mprof run mem.py
@@ -100,11 +104,11 @@ mprof plot
 
 This will pop up a window with the following figure:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/mprof_plot_output.png?raw=true})
 
 Turns out it wasn't as we expected. The python garbage collector took its time to deallocate the memory, while the second iteration for list creation wasn't as memory consuming as the first! This functionality is also helpful to detect possible memory leaks, i.e. cases where some function is continuously taking more and more memory as execution progresses. 
 
-If we want to detect where the leak is, we'll need a line profiler! The 'memory_profiler' package also includes this functionality, as long as we add the `@profile` decorator.
+If we want to detect where the leak is, we'll need a line profiler! The 'memory\_profiler' package also includes this functionality, as long as we add the `@profile` decorator.
 
 ```
 python -m memory_profiler mem_kern.py
@@ -112,7 +116,7 @@ python -m memory_profiler mem_kern.py
 
 We need to be a bit careful, though, of where we place our `@profile` decorator! In this case, because the function is an internal one, we won't get any information from it!
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/memory_profiler_mem_output.png?raw=true)
 
 To solve this, we need to refactor the code a bit and place the decorator, where it's a bit more relevant. Let's re-run.
 
@@ -123,5 +127,5 @@ python -m memory_profiler mem_kern_refactored.py
 
 Which will output:
 
-![]()
+![](https://github.com/djib2011/teaching-material/blob/master/python/profiling/figures/memory_profiler_mem_refactored_output.png?raw=true)
 
