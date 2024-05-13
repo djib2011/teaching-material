@@ -17,13 +17,16 @@ def divide(*nums):
     divide(a, b, c, d) == a / b / c / d
     """    
 
-    if len(nums) < 1
+    if len(nums) < 1:
         raise ValueError('Pass at least two values to the function')
 
     if len(nums) == 1:
         return nums[0]
 
     nominator = nums[0]
-    denominator = multiply(nums[1:])
+    denominator = multiply(*nums[1:])
+    
+    print(f'{nominator = }')
+    print(f'{denominator = }')
 
     return nominator / denominator
