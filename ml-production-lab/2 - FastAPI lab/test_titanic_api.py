@@ -55,7 +55,7 @@ def test_predict_invalid_data_types(valid_passenger_data):
     invalid_data = valid_passenger_data.copy()
     invalid_data['age'] = 'twenty nine'  # change age to an invalid data type
 
-    response = client.post('/predict', json=valid_passenger_data)
+    response = client.post('/predict', json=invalid_data)
     assert response.status_code == 422
 
 
@@ -64,7 +64,7 @@ def test_predict_out_of_range_data(valid_passenger_data):
     Test out-of-range data
     """
     invalid_data = valid_passenger_data.copy()
-    invalid_data['Fare'] = -10  # set fare to a negative number to simulate out-of-range data
+    invalid_data['fare'] = -10  # set fare to a negative number to simulate out-of-range data
 
-    response = client.post('/predict', json=valid_passenger_data)
-    assert response.status_code == 422
+    response = client.post('/predict', json=invalid_data)
+    assert response.status_code == 400
