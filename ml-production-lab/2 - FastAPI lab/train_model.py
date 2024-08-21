@@ -1,13 +1,8 @@
-import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import classification_report
+import pandas as pd
 import pickle
-import os
 
 # Load dataset
 data = pd.read_csv('https://raw.githubusercontent.com/pcsanwald/kaggle-titanic/master/train.csv')
@@ -31,17 +26,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Define the model and the remaining preprocessing steps
 
+## Some things to consider during this step:
+##    - Some of the data are missing. How can we handle this?
+##    - One column (i.e. 'embarked') still needs encoding. How can we do this?
+##    - Our features need to be in the same scale. How can we do this?
+
+## This time in the data we have both categorical and numeric features.
+## The easiest way to handle this in sklean is to use two transformers, one for each kind.
+
 ## Define transformers numerical features
-numerical_transformer = Pipeline(steps=[
-    ('imputer', SimpleImputer(strategy='mean')),
-    ('scaler', StandardScaler())
-])
+numerical_transformer = Pipeline(steps=[ ... ])  # what preprocessing steps are needed for numerical features?
 
 ## Define transformers categorical features
-categorical_transformer = Pipeline(steps=[
-    ('encoder', OneHotEncoder(sparse_output=False)),
-    ('scaler', StandardScaler())
-])
+categorical_transformer = Pipeline(steps=[ ... ])  # what preprocessing steps are needed for categorical features?
 
 ## Combine both transformers into a ColumnTransformer
 preprocessor = ColumnTransformer(
@@ -51,23 +48,13 @@ preprocessor = ColumnTransformer(
     ])
 
 ## Define the pipeline for transforming the features + training/inference with the RF model
-pipeline = Pipeline(steps=[
-    ('preprocessor', preprocessor),
-    ('model', RandomForestClassifier())
-])
-
-# Training
-pipeline.fit(X_train, y_train)
+pipeline = Pipeline(steps=[ ... ])  # what steps does the final pipeline need to contain?
 
 
-# Evaluation
-print(classification_report(y_test, pipeline.predict(X_test)))
+# Train the model
+# ...
 
 
 # Save the model
-script_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(script_dir, 'resources/titanic_model.pkl')
-print(f'Saving trained model in {model_path}')
-
-with open(model_path, 'wb') as f:
-    pickle.dump(pipeline, f)
+with open(..., 'wb') as f:
+    pickle.dump(..., f)
