@@ -58,7 +58,7 @@ def save_outputs(X: pd.DataFrame, y: pd.DataFrame, last_X: pd.DataFrame):
     Save the training dataframes
     """
 
-    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources')
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp_outputs')
 
     if not os.path.isdir(output_dir):
         os.makedirs(output_dir)
@@ -125,5 +125,5 @@ if __name__ == '__main__':
     logger.debug(f'{X.shape = }')
     logger.debug(f'{y.shape = }')
 
-    logger.info('Saving outputs to ./resources')
+    logger.info('Saving outputs to ./temp_outputs')
     save_outputs(X, y, last_X)  # save tables

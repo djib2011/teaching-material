@@ -11,7 +11,7 @@ def load_data() -> (pd.DataFrame, pd.DataFrame, pd.Series):
     Load the training and inference dataframes
     """
 
-    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources')
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp_outputs')
 
     X = pd.read_csv(os.path.join(output_dir, 'X.csv'), index_col=0)
     y = pd.read_csv(os.path.join(output_dir, 'y.csv'), index_col=0)
@@ -80,7 +80,7 @@ def save_preds(preds: pd.Series):
     Save the preds
     """
 
-    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources')
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp_outputs')
 
     preds.to_csv(os.path.join(output_dir, 'preds.csv'))
 
@@ -132,5 +132,5 @@ if __name__ == '__main__':
     logger.info('Converting predictions to pandas series with proper time index...')
     preds = convert_preds_to_series(preds, last_X)
 
-    logger.info('Saving predictions to ./resources')
+    logger.info('Saving predictions to ./temp_outputs')
     save_preds(preds)
