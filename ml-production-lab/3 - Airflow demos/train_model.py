@@ -105,7 +105,10 @@ def _create_logger() -> logging.Logger:
     return logger
 
 
-if __name__ == '__main__':
+def run_training():
+    """
+    Main entrypoint function for training the weather forecasting model
+    """
 
     logger = _create_logger()
 
@@ -134,3 +137,8 @@ if __name__ == '__main__':
 
     logger.info('Saving predictions to ./temp_outputs')
     save_preds(preds)
+
+
+if __name__ == '__main__':
+
+    run_training()

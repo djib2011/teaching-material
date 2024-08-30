@@ -88,6 +88,35 @@ def _create_logger() -> logging.Logger:
     return logger
 
 
+def run_download_and_preprocess(date: str = None, num_days: int = 1, lookback: int = 24, horizon: int = 6):
+    """
+    Main entrypoint function for downloading and preprocessing weather data
+    """
+
+    LOGGER.info('Downloading data from weather API...')
+    data = download_data(date=date, num_days=num_days)  # download data
+    LOGGER.debug(f'{len(data) = }')
+
+    LOGGER.info('Converting data to series...')
+    series = convert_to_series(data)  # convert to timeseries
+    LOGGER.debug(f'{series.shape = }')
+
+    LOGGER.info(f'Extracting the last {lookback} hours from the series for inference...')
+    last_X = get_last_timesteps(series, lookback=lookback)
+    LOGGER.debug(f'{last_X.shape = }')
+
+    LOGGER.info('Building the training dataset...')
+    X, y = build_dataset(series, lookback=lookback, horizon=horizon)  # build training dataset
+    LOGGER.debug(f'{X.shape = }')
+    LOGGER.debug(f'{y.shape = }')
+
+    LOGGER.info('Saving outputs to ./temp_outputs')
+    save_outputs(X, y, last_X)  # save tables
+
+
+LOGGER = _create_logger()  # create logger
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -103,27 +132,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    logger = _create_logger()  # create logger
+    LOGGER.info('Running download and preprocessing')
+    LOGGER.info(f'Command line arguments: {args}')
 
-    logger.info('Running download and preprocessing')
-    logger.info(f'Command line arguments: {args}')
-
-    logger.info('Downloading data from weather API...')
-    data = download_data(date=args.date, num_days=args.num_days)  # download data
-    logger.debug(f'{len(data) = }')
-
-    logger.info('Converting data to series...')
-    series = convert_to_series(data)  # convert to timeseries
-    logger.debug(f'{series.shape = }')
-
-    logger.info(f'Extracting the last {args.lookback} hours from the series for inference...')
-    last_X = get_last_timesteps(series, lookback=args.lookback)
-    logger.debug(f'{last_X.shape = }')
-
-    logger.info('Building the training dataset...')
-    X, y = build_dataset(series, lookback=args.lookback, horizon=args.horizon)  # build training dataset
-    logger.debug(f'{X.shape = }')
-    logger.debug(f'{y.shape = }')
-
-    logger.info('Saving outputs to ./temp_outputs')
-    save_outputs(X, y, last_X)  # save tables
+    run_download_and_preprocess(date=args.date, num_days=args.num_days, lookback=args.lookback, horizon=args.horizon)

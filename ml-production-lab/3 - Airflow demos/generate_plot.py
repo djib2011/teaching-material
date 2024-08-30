@@ -43,8 +43,16 @@ def generate_plot(last_X: pd.Series, preds: pd.Series):
     plt.savefig(os.path.join(output_dir, filename))
 
 
-if __name__ == '__main__':
+def run_generate_plot():
+    """
+    Main entrypoint function for generating final plot
+    """
 
     last_X, preds = load_results()
 
     generate_plot(last_X, preds)
+
+
+if __name__ == '__main__':
+
+    run_generate_plot()
