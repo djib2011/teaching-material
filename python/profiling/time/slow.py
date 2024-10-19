@@ -22,7 +22,7 @@ def func3():
 
 if __name__ == '__main__':
 
-    func_execution_order = [func1, func2, func3, func2, func1, func2, func3]
+    func_execution_order = [func1, func2, func3, func2, func1, func2, func2]
     
     for func in func_execution_order:
         print('Executing:', func.__name__)
