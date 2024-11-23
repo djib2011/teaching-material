@@ -2,8 +2,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 import numpy as np
-import logging
 import os
+
+from utils import LOGGER
 
 
 def load_data() -> (pd.DataFrame, pd.DataFrame, pd.Series):
@@ -85,57 +86,35 @@ def save_preds(preds: pd.Series):
     preds.to_csv(os.path.join(output_dir, 'preds.csv'))
 
 
-def _create_logger() -> logging.Logger:
-    """
-    Create a logger for more convenient logging
-    """
-
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.DEBUG)
-
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-    handler.setFormatter(formatter)
-
-    logger.addHandler(handler)
-
-    return logger
-
-
 def run_training():
     """
     Main entrypoint function for training the weather forecasting model
     """
 
-    logger = _create_logger()
-
-    logger.info('Loading training and inference datasets...')
+    LOGGER.info('Loading training and inference datasets...')
     X, y, last_X = load_data()
-    logger.debug(f'{X.shape = }')
-    logger.debug(f'{y.shape = }')
-    logger.debug(f'{last_X.shape = }')
+    LOGGER.debug(f'{X.shape = }')
+    LOGGER.debug(f'{y.shape = }')
+    LOGGER.debug(f'{last_X.shape = }')
 
-    logger.info('Run preprocessing on training data...')
-    logger.debug(f'Before: {X.max().max() = }  |  {X.min().min() = }')
-    logger.debug(f'Before: {y.max().max() = }  |  {y.min().min() = }')
+    LOGGER.info('Run preprocessing on training data...')
+    LOGGER.debug(f'Before: {X.max().max() = }  |  {X.min().min() = }')
+    LOGGER.debug(f'Before: {y.max().max() = }  |  {y.min().min() = }')
     X, y = preprocessing(X, y)
-    logger.debug(f'After: {X.max().max() = }  |  {X.min().min() = }')
-    logger.debug(f'After: {y.max().max() = }  |  {y.min().min() = }')
+    LOGGER.debug(f'After: {X.max().max() = }  |  {X.min().min() = }')
+    LOGGER.debug(f'After: {y.max().max() = }  |  {y.min().min() = }')
 
-    logger.info('Training model...')
+    LOGGER.info('Training model...')
     model = train_model(X, y)
 
-    logger.info(f'Performing inference on last {len(last_X)} datapoints')
+    LOGGER.info(f'Performing inference on last {len(last_X)} datapoints')
     preds = make_inference(model, last_X)
-    logger.debug(f'{preds.shape = }')
+    LOGGER.debug(f'{preds.shape = }')
 
-    logger.info('Converting predictions to pandas series with proper time index...')
+    LOGGER.info('Converting predictions to pandas series with proper time index...')
     preds = convert_preds_to_series(preds, last_X)
 
-    logger.info('Saving predictions to ./temp_outputs')
+    LOGGER.info('Saving predictions to ./temp_outputs')
     save_preds(preds)
 
 

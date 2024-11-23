@@ -1,8 +1,9 @@
 from datetime import datetime
 import pandas as pd
 import argparse
-import logging
 import os
+
+from utils import LOGGER
 
 
 def download_data(date: str = None, num_days: int = 1, long: float = 23.798, lat: float = 38.021) -> pd.DataFrame:
@@ -68,26 +69,6 @@ def save_outputs(X: pd.DataFrame, y: pd.DataFrame, last_X: pd.DataFrame):
     last_X.to_csv(os.path.join(output_dir, 'last_X.csv'))
 
 
-def _create_logger() -> logging.Logger:
-    """
-    Create a logger for more convenient logging
-    """
-
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.DEBUG)
-
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-    handler.setFormatter(formatter)
-
-    logger.addHandler(handler)
-
-    return logger
-
-
 def run_download_and_preprocess(date: str = None, num_days: int = 1, lookback: int = 24, horizon: int = 6):
     """
     Main entrypoint function for downloading and preprocessing weather data
@@ -112,9 +93,6 @@ def run_download_and_preprocess(date: str = None, num_days: int = 1, lookback: i
 
     LOGGER.info('Saving outputs to ./temp_outputs')
     save_outputs(X, y, last_X)  # save tables
-
-
-LOGGER = _create_logger()  # create logger
 
 
 if __name__ == '__main__':
