@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
+from utils import LOGGER
+
 
 def load_results() -> (pd.Series, pd.Series):
     """
@@ -38,9 +40,10 @@ def generate_plot(last_X: pd.Series, preds: pd.Series):
     if not os.path.isdir(output_dir):
         os.makedirs(output_dir)
 
-    filename = f'{preds.index[0].split(":")[0]}.png'
+    filename = os.path.join(output_dir, f'{preds.index[0].split(":")[0]}.png')
+    LOGGER.info(f'Saving plot as {filename}')
 
-    plt.savefig(os.path.join(output_dir, filename))
+    plt.savefig(filename)
 
 
 def run_generate_plot():
