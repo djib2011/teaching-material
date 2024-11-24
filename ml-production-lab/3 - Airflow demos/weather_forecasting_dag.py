@@ -7,6 +7,8 @@ def download_and_preprocess_callable():
     """
     Wrapper for run_download_and_preprocess function. Meant to be used from the AF PythonVirtualenvOperator
     """
+    import sys
+    sys.path.append('/opt/airflow/dags')
     from download_and_preprocess import run_download_and_preprocess
     run_download_and_preprocess()
 
@@ -15,6 +17,8 @@ def train_model_callable():
     """
     Wrapper for run_training function. Meant to be used from the AF PythonVirtualenvOperator
     """
+    import sys
+    sys.path.append('/opt/airflow/dags')
     from train_model import run_training
     run_training()
 
@@ -23,6 +27,8 @@ def generate_plot_callable():
     """
     Wrapper for run_generate_plot function. Meant to be used from the AF PythonVirtualenvOperator
     """
+    import sys
+    sys.path.append('/opt/airflow/dags')
     from generate_plot import run_generate_plot
     run_generate_plot()
 
@@ -50,6 +56,7 @@ dag = DAG(
     schedule_interval=timedelta(days=1),  # Schedule it to run once a day
     catchup=False,  # Skip backfill for all missed runs
 )
+
 
 # Define tasks
 download_task = PythonVirtualenvOperator(
