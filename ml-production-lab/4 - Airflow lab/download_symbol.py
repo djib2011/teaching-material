@@ -77,5 +77,5 @@ def run_download_symbol(symbol, lookback: int = 60, horizon: int = 5):
 
 
 if __name__ == '__main__':
-    run_download_and_preprocess(symbol='AAPL')
-    run_download_and_preprocess(symbol='GOOG')
+    run_download_symbol(symbol='AAPL')
+    run_download_symbol(symbol='GOOG')
