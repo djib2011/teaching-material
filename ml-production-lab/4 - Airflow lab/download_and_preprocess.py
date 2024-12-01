@@ -10,17 +10,17 @@ from utils import LOGGER
 API_KEY = 'ASO2CTQZNW5VCSF2'
 
 
-def download_historical_data(symbol: str) -> List[float]:
+def download_historical_data(symbol: str) -> (List[float], List[str]):
 
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={API_KEY}'
 
     data = requests.get(url).json()
 
-    dates = list(data['Time Series (Daily)'].keys())
+    dates = list(data['Time Series (Daily)'].keys())[::-1]
 
-    LOGGER.info(f'Retrieved historical data for symbol {symbol} for dates from {dates[-1]} to {dates[0]} ({len(dates)} in total.')
+    LOGGER.info(f'Retrieved historical data for symbol {symbol} for dates from {dates[0]} to {dates[-1]} ({len(dates)} in total).')
 
-    return [float(data['Time Series (Daily)'][date]['4. close']) for date in dates[::-1]]
+    return [float(data['Time Series (Daily)'][date]['4. close']) for date in dates], dates
 
 
 def build_dataset(timeseries: pd.Series, lookback: int = 24, horizon: int = 6) -> (pd.DataFrame, pd.DataFrame):
@@ -56,7 +56,7 @@ def run_download_and_preprocess(symbol, lookback: int = 60, horizon: int = 5):
     """
 
     LOGGER.info(f'Downloading data for symbol: {symbol}')
-    data = download_historical_data(symbol=symbol)  # download data
+    data, _ = download_historical_data(symbol=symbol)  # download data (ignore dates)
     LOGGER.debug(f'{len(data) = }')
 
     LOGGER.info('Converting data to series...')
