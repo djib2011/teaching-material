@@ -50,7 +50,7 @@ def save_outputs(x: pd.DataFrame, y: pd.DataFrame, symbol: str):
     y.to_csv(os.path.join(output_dir, f'{symbol}_y.csv'))
 
 
-def run_download_and_preprocess(symbol, lookback: int = 60, horizon: int = 5):
+def run_download_symbol(symbol, lookback: int = 60, horizon: int = 5):
     """
     Main entrypoint function for downloading and preprocessing weather data
     """

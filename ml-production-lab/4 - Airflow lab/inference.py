@@ -8,7 +8,7 @@ import pickle
 import sys
 import os
 
-from download_and_preprocess import download_historical_data
+from download_symbol import download_historical_data
 from utils import LOGGER
 
 
