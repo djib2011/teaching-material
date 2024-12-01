@@ -62,6 +62,9 @@ def generate_plot(lookback_x: pd.Series, preds: pd.Series, symbol: str):
 
 
 def run_inference(symbol: str, lookback: int = 60):
+    """
+    Main entrypoint for generating predictions and plotting them
+    """
 
     LOGGER.info('Loading trained model.')
     model = load_model()

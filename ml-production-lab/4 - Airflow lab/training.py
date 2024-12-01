@@ -66,7 +66,7 @@ def train_model(x: np.ndarray, y: np.ndarray, **hparams: dict) -> RandomForestRe
 
 def run_training(symbol: str = None):
     """
-    Main entrypoint function for training the weather forecasting model
+    Main entrypoint function for training the stock price forecaster
     """
 
     if symbol:

@@ -52,7 +52,7 @@ def save_outputs(x: pd.DataFrame, y: pd.DataFrame, symbol: str):
 
 def run_download_symbol(symbol, lookback: int = 60, horizon: int = 5):
     """
-    Main entrypoint function for downloading and preprocessing weather data
+    Main entrypoint function for downloading and preprocessing stock data for a given symbol
     """
 
     LOGGER.info(f'Downloading data for symbol: {symbol}')
