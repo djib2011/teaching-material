@@ -89,7 +89,7 @@ def run_training(symbol: str = None):
     model = train_model(X, y)
 
     LOGGER.info('Saving trained model to ./temp_outputs')
-    with open('trained_model.pkl', 'wb') as f:
+    with open(os.path.join(DATA_DIR, 'trained_model.pkl'), 'wb') as f:
         pickle.dump(model, f)
 
 
