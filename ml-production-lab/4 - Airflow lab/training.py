@@ -27,7 +27,7 @@ def load_data_multiple() -> (pd.DataFrame, pd.DataFrame):
     Search for all symbols under the DATA_DIR, load the individual datasets and merge them all together
     """
 
-    symbols = set([f.split('_')[0] for f in os.listdir(DATA_DIR) if f.endswith('X.csv')])
+    symbols = set([f.split('_')[0] for f in os.listdir(DATA_DIR) if f.endswith('X.csv') and f.split('_')[0].isupper()])
     LOGGER.info(f'Symbols found: {symbols}')
 
     data, targets = [], []
