@@ -11,7 +11,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.docstore.in_memory import InMemoryDocstore
 
 
-
 def download_and_extract_movie_dataset():
     """
     Download and extracts the CMU Movie Summary Corpus
@@ -43,7 +42,6 @@ def load_and_preprocess_summaries(movie_dataset_dir='MovieSummaries'):
     summaries.columns = ['wikipedia_id', 'plot_summary']
     
     return summaries
-
     
 
 def load_and_preprocess_metadata(movie_dataset_dir='MovieSummaries'):
@@ -168,10 +166,9 @@ def populate_vector_store(movie_df, vector_store, batch_size=500):
 
     for i in tqdm(range(0, len(movies), batch_size)):
 
-        add_batch_to_vector_store(movies[i:i+BATCH_SIZE], vector_store)
-        
+        add_batch_to_vector_store(movies[i:i+BATCH_SIZE], vector_store)        
 
-        
+
 if __name__ == '__main__':
     BATCH_SIZE = 500
     FAISS_SAVE_DIR = 'movie_faiss'
