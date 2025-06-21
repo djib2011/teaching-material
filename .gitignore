@@ -1,0 +1,5 @@
+# Data and index for semantic search bite
+bite-sized/semantic-search/MovieSummaries.tar.gz
+bite-sized/semantic-search/MovieSummaries/
+bite-sized/semantic-search/movie_faiss/
+bite-sized/semantic-search/*env
